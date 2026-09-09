@@ -7,36 +7,42 @@ const widgetStates: Array<{ status: WidgetStatus; title: string }> = [
   { title: "Smart Home", status: "success" },
 ];
 
-export function DashboardPage() {
+type DashboardPageProps = {
+  dashboardName: string;
+};
+
+export function DashboardPage({ dashboardName }: DashboardPageProps) {
+  const now = new Date();
   const today = new Intl.DateTimeFormat("de-DE", {
-    dateStyle: "full",
-  }).format(new Date());
+    weekday: "long",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(now);
   const time = new Intl.DateTimeFormat("de-DE", {
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date());
+  }).format(now);
 
   return (
     <section aria-labelledby="dashboard-title">
-      <div className="flex flex-col gap-1 border-b border-slate-800 pb-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm text-slate-400">{today}</p>
-          <h2 id="dashboard-title" className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
-            Guten Tag
-          </h2>
-        </div>
-        <time className="text-3xl font-semibold tabular-nums text-cyan-300" dateTime={new Date().toISOString()}>
-          {time}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-slate-800 pb-3">
+        <h1 id="dashboard-title" className="text-3xl leading-10 font-bold tracking-tight sm:text-4xl sm:leading-11">
+          {dashboardName}
+        </h1>
+        <time className="flex flex-col items-end font-semibold tabular-nums text-cyan-300" dateTime={now.toISOString()}>
+          <span className="text-3xl leading-7">{time}</span>
+          <span className="text-sm leading-3 text-slate-400 sm:text-base sm:leading-4">{today}</span>
         </time>
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
         {widgetStates.map((widget) => (
           <DashboardWidget key={widget.title} title={widget.title} status={widget.status} />
         ))}
       </div>
 
-      <p className="mt-6 text-sm text-slate-400" role="status">
+      <p className="mt-4 text-sm text-slate-400" role="status">
         Die Beispielzustände demonstrieren, dass Widgets unabhängig geladen und behandelt werden.
       </p>
     </section>

@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import { App } from "./App";
+import { dashboardConfig } from "./config";
 import "./styles.css";
 
 const queryClient = new QueryClient({
@@ -20,6 +21,8 @@ const rootElement = document.getElementById("root");
 if (rootElement === null) {
   throw new Error("The application root element is missing.");
 }
+
+document.title = dashboardConfig.dashboardName;
 
 createRoot(rootElement).render(
   <StrictMode>
